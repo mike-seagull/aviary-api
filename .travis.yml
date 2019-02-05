@@ -18,7 +18,6 @@ after_success:
 before_deploy:
 - openssl aes-256-cbc -K $encrypted_ced65566b501_key -iv $encrypted_ced65566b501_iv
   -in .travis/secret.txt.enc -out secret.txt -d
-- cat secret.txt
 - $SH "npm run bundle"
 - which ssh-agent || ( sudo apt-get update -qy && apt-get install --no-install-recommends
   -qfy openssh-client git )
