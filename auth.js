@@ -9,7 +9,7 @@ const db_name = process.env.DB_NAME
 
 async function authorization_middleware(req, res, next) {
 	const NO_AUTH_ENDPOINTS = ["/api/heartbeat"]
-	if NO_AUTH_ENDPOINTS.indexOf(req.path) === -1 {
+	if (NO_AUTH_ENDPOINTS.indexOf(req.path) === -1) {
 		// this endpoint need authorization
 		if (req.headers.authorization) {
 			let auth_header = req.headers.authorization.replace('Basic ','');
