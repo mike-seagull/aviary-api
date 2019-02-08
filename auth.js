@@ -63,7 +63,7 @@ router.get('/', async (req, resp) => {
 			hash: generated_hash
 		})
 	} else {
-		res.status(500).send({err: "need a password"})
+		resp.status(500).send({err: "need a password"})
 	}
 })
 module.exports = {
