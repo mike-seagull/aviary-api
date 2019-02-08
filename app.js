@@ -19,10 +19,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 // set basic auth
-app.use(auth)
+app.use(auth.middleware)
 app.use(pushover.needsPush);
 const base_url = "/api";
 app.use(base_url, generic);
+app.use(base_url+"/auth", auth.router);
 app.use(base_url+"/garage", garage);
 app.use(base_url+"/pushover", pushover.router);
 app.use(base_url+"/directv", directv);

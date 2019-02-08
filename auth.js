@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const crypto = require('crypto');
+const router = require('express').Router();
 
 const mongo_user = process.env.DB_USER
 const mongo_pass = process.env.DB_PASS
@@ -45,6 +46,25 @@ async function authorization_middleware(req, res, next) {
 		next()
 	}
 }
-
-module.exports = authorization_middleware;
+function genRandomString(length) {
+	return new Promise((res, rej) => {
+		string = crypto.randomBytes(Math.ceil(length/2))
+            .toString('hex') /** convert to hexadecimal format */
+            .slice(0,length);   /** return required number of characters */
+        res(string)
+	})
+};
+router.get('/', async (req, resp) => {
+	let password = req.query.password
+	let salt = await genRandomString(10)
+	generated_hash = crypto.createHash('sha256').update(salt+password+pepper, 'utf8').digest('hex')
+	resp.send({
+		salt: salt,
+		hash: generated_hash
+	})
+})
+module.exports = {
+	middleware: authorization_middleware,
+	router: router
+};
 
