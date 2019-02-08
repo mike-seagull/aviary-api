@@ -49,15 +49,17 @@ async function authorization_middleware(req, res, next) {
 function genRandomString(length) {
 	return new Promise((res, rej) => {
 		string = crypto.randomBytes(Math.ceil(length/2))
-            .toString('hex') /** convert to hexadecimal format */
-            .slice(0,length);   /** return required number of characters */
+            		.toString('hex') /** convert to hexadecimal format */
+            		.slice(0,length);   /** return required number of characters */
         res(string)
 	})
 };
 router.get('/', async (req, resp) => {
 	if (req.query.password) {
 		let salt = await genRandomString(10)
-		generated_hash = crypto.createHash('sha256').update(salt+password+pepper, 'utf8').digest('hex')
+		generated_hash = crypto.createHash('sha256')
+			.update(salt + req.query.password + pepper, 'utf8')
+			.digest('hex')
 		resp.send({
 			salt: salt,
 			hash: generated_hash
