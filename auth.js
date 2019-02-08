@@ -56,11 +56,7 @@ function genRandomString(length) {
 };
 router.get('/', async (req, resp) => {
 	if (req.query.password) {
-		if (req.query.salt) {
-			let salt = req.query.salt
-		} else {
-			let salt = await genRandomString(10)
-		}
+		let salt = req.query.salt || await genRandomString(10)
 		generated_hash = crypto.createHash('sha256')
 			.update(salt + req.query.password + pepper, 'utf8')
 			.digest('hex')
