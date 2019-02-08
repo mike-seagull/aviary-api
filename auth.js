@@ -55,13 +55,16 @@ function genRandomString(length) {
 	})
 };
 router.get('/', async (req, resp) => {
-	let password = req.query.password
-	let salt = await genRandomString(10)
-	generated_hash = crypto.createHash('sha256').update(salt+password+pepper, 'utf8').digest('hex')
-	resp.send({
-		salt: salt,
-		hash: generated_hash
-	})
+	if (req.query.password) {
+		let salt = await genRandomString(10)
+		generated_hash = crypto.createHash('sha256').update(salt+password+pepper, 'utf8').digest('hex')
+		resp.send({
+			salt: salt,
+			hash: generated_hash
+		})
+	} else {
+		res.status(500).send({err: "need a password"})
+	}
 })
 module.exports = {
 	middleware: authorization_middleware,
