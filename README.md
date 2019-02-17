@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/mike-seagull/home-api-node.svg?branch=master)](https://travis-ci.com/mike-seagull/home-api-node)  
+[![Build Status](https://travis-ci.com/mike-seagull/aviary-api.svg?branch=master)](https://travis-ci.com/mike-seagull/aviary-api)  
 <p>RESTful API to control a few things in my home</p>
 <h4>Environment Variables</h4>
 

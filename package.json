@@ -1,5 +1,5 @@
 {
-  "name": "home-api-node",
+  "name": "aviary-api",
   "version": "0.1.0",
   "description": "",
   "main": "app.js",
@@ -12,7 +12,7 @@
     "test": "./node_modules/jest/bin/jest.js",
     "test:remote": "./node_modules/jest/bin/jest.js --config ./test/jest_remote_config.json",
     "start": "node server.js",
-    "bundle": "./node_modules/pkg/lib-es5/bin.js -t node8-linux-x64 -o ./bin/home-api-node ./server.js"
+    "bundle": "./node_modules/pkg/lib-es5/bin.js -t node8-linux-x64 -o ./bin/aviary-api ./server.js"
   },
   "author": "",
   "license": "ISC",
