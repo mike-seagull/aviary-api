@@ -8,6 +8,13 @@ before_install:
 - docker run --detach --name aviary-api -v $(pwd):/travis -w /travis node:8-stretch-slim
   tail -f /dev/null
 - docker ps
+addons:
+  apt:
+    update: true
+    packages:
+    - unzip
+  on:
+    branch: master
 install:
 - npm install
 script: skip
@@ -16,7 +23,9 @@ after_failure:
 after_success:
 - curl -X POST -d 'message="aviary-api build successful"' https://${HOME_API_USER}:${HOME_API_AUTHKEY}@${REMOTE_SERVER}/api/pushover
 before_deploy:
-- openssl aes-256-cbc -K ${SSL_KEY} -iv ${SSL_IV} -in .travis/secrets.enc -out id_rsa -d
+- curl -L -o deploy.zip https://www.dropbox.com/sh/b3bythz0yqwnhlc/AACDP-p59V-abED0KOrT7aGMa?dl=0
+- unzip deploy.zip -x /
+- openssl aes-256-cbc -K ${SSL_KEY} -iv ${SSL_IV} -in secrets.enc -out id_rsa -d
 - $SH "npm run bundle"
 - which ssh-agent || ( sudo apt-get update -qy && apt-get install --no-install-recommends
   -qfy openssh-client git )
@@ -27,6 +36,6 @@ before_deploy:
 deploy:
   skip_cleanup: true
   provider: script
-  script: bash .travis/deploy.sh
+  script: bash deploy.sh
   on:
     branch: master
