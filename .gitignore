@@ -64,3 +64,6 @@ bin/home-api-node
 
 # ignore direnv
 .envrc
+
+# mac files
+.DS_Store
