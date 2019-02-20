@@ -1,7 +1,11 @@
-[![Build Status](https://travis-ci.com/mike-seagull/aviary-api.svg?branch=master)](https://travis-ci.com/mike-seagull/aviary-api)  
-<p>RESTful API to control a few things in my home</p>
-<h4>Environment Variables</h4>
+aviary-api
+===
+RESTful API to control a few things in my home
+___
 
+[![Build Status](https://travis-ci.com/mike-seagull/aviary-api.svg?branch=master)](https://travis-ci.com/mike-seagull/aviary-api)  
+<img src="aviary.png" width="200">
+#### Environment Variables
 * DB_PASS
 * DB_USER
 * DB_URL
@@ -15,7 +19,7 @@
 * DIRECTV_HOST
 * PUSHOVER_TOKEN
 * PUSHOVER_USER
-<h4>To bundle into a binary</h4>
-<code>npm run bundle</code>
-<h4>To run</h4>
-<code>node server.js $PORT</code>
+#### To bundle into a binary
+```npm run bundle```
+#### To run
+```node server.js $PORT```
