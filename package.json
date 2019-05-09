@@ -25,6 +25,7 @@
     "mongodb": "^3.1.10",
     "morgan": "^1.9.1",
     "myq-node": "^0.1.4",
+    "mysql": "^2.17.1",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "util-promisify": "^2.1.0"

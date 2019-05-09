@@ -1,11 +1,12 @@
 const MongoClient = require('mongodb').MongoClient;
 const crypto = require('crypto');
 const router = require('express').Router();
+const mysql = require('mysql');
 
-const mongo_user = process.env.DB_USER
-const mongo_pass = process.env.DB_PASS
+const mysql_user = process.env.DB_USER
+const mysql_pass = process.env.DB_PASS
 const pepper = process.env.PEPPER
-const mongo_url = process.env.DB_URL
+const mysql_host = process.env.DB_URL
 const db_name = process.env.DB_NAME
 
 async function authorization_middleware(req, res, next) {
@@ -16,27 +17,27 @@ async function authorization_middleware(req, res, next) {
 			let auth_header = req.headers.authorization.replace('Basic ','');
 			auth_header = new Buffer(auth_header, 'base64').toString('ascii')
 			let [username, password] = auth_header.split(":")
-			MongoClient.connect("mongodb+srv://"+mongo_user+":"+mongo_pass+"@"+mongo_url, useNewUrlParser=true, (err, client) => {
-				const db = client.db(db_name);
-				db.collection("users").findOne({"username": username},{projection: {_id: false, "salt": true}},(err, result) => {
-					if(result) {
-						const salt = result.salt;
-						var hash = crypto.createHash('sha256').update(salt+password+pepper).digest('hex');
-						db.collection('users').findOne({"username": username, "password": hash}, (err, result) => {
-							if(result) {
-					    		next()
-								client.close()
-					    	} else {
-								res.status(401).send("Access Denied")
-								client.close()
-					    	}
-						})
-					} else {
+
+			var conn  = mysql.createConnection({host: mysql_host, user: mysql_user, password: mysql_pass, database: db_name});
+
+			conn.query('SELECT salt, password FROM users WHERE username="'+username+'" LIMIT 1;', (error, results, fields) => {
+			  	conn.end()
+				if (results.length > 0) {
+					const salt = results[0].salt
+					const correct_password = results[0].password
+					const hash = crypto.createHash('sha256').update(salt + password + pepper).digest('hex');
+					if(correct_password == password) {
+			    		next()
+						client.close()
+			    	} else {
 						res.status(401).send("Access Denied")
 						client.close()
-					}
-				})
-			})
+			    	}
+				}else {
+					res.status(401).send("Access Denied")
+					client.close()					
+				}
+			});
 		} else {
 			res.status(401).send("Access Denied")	
 			client.close()
