@@ -26,21 +26,17 @@ async function authorization_middleware(req, res, next) {
 					const salt = results[0].salt
 					const correct_password = results[0].password
 					const hash = crypto.createHash('sha256').update(salt + password + pepper).digest('hex');
-					if(correct_password == password) {
+					if(correct_password == hash) {
 			    		next()
-						client.close()
 			    	} else {
 						res.status(401).send("Access Denied")
-						client.close()
 			    	}
 				}else {
 					res.status(401).send("Access Denied")
-					client.close()					
 				}
 			});
 		} else {
 			res.status(401).send("Access Denied")	
-			client.close()
 		}
 	} else {
 		// no auth needed
