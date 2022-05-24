@@ -1,0 +1,30 @@
+github:
+  prebuilds:
+    master: false
+    branches: true
+image: ghcr.io/mike-seagull/gitpod-images:tailscale
+tasks:
+  - name: install dependencies
+    before: echo "in before" 
+    init: pyenv local && pip install -r requirements.txt
+  - name: tailscaled
+    command: |
+      if [ -n "${TAILSCALE_STATE_MYPROJECT}" ]; then
+        # restore the tailscale state from gitpod user's env vars
+        sudo mkdir -p /var/lib/tailscale
+        echo "${TAILSCALE_STATE_MYPROJECT}" | sudo tee /var/lib/tailscale/tailscaled.state > /dev/null
+      fi
+      sudo tailscaled
+  - name: tailscale
+    command: |
+      if [ -n "${TAILSCALE_STATE_MYPROJECT}" ]; then
+        sudo -E tailscale up
+      else
+        sudo -E tailscale up --authkey ${TAILSCALE_GITPOD_AUTHKEY} --hostname="gitpod-${GITPOD_GIT_USER_NAME// /-}-$(echo ${GITPOD_WORKSPACE_CONTEXT} | jq -r .repository.name)"
+        # store the tailscale state into gitpod user
+        /bin/gp env TAILSCALE_STATE_MYPROJECT="$(sudo cat /var/lib/tailscale/tailscaled.state)"
+      fi
+vscode:
+  extensions:
+    - dcasella.monokai-plusplus
+    - wayou.vscode-todo-highlight
