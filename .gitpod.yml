@@ -6,7 +6,12 @@ image: ghcr.io/mike-seagull/gitpod-images:tailscale
 tasks:
   - name: install dependencies
     before: echo "in before" 
-    init: pyenv install $(cat .python-version) && pyenv local && pip install -r requirements.txt
+    init: |
+      pyenv install $(cat .python-version)
+      pyenv local
+      python -m venv .venv
+      source .venv/bin/activate
+      pip install -r requirements.txt
   - name: tailscaled
     command: |
       if [ -n "${TAILSCALE_STATE_MYPROJECT}" ]; then

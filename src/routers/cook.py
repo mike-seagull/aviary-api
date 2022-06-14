@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-cook_route = APIRouter()
+cook_router = APIRouter()
 
-@cook_route.get('/')
+@cook_router.post('/')
 def convert():
     return "in cook"
