@@ -1,0 +1,29 @@
+{% block page_content %}
+<h1 class="cap">Cook Time Converter</h1>
+{% if new_time %}
+    {% set time_str="At " ~ new_temp ~ "&deg;F, the food will be ready in " %}
+    {% if new_time > 60 %}
+        {% set time_str = time_str ~ new_time//60 %}
+        {% if new_time//60 == 1 %}
+            {% set time_str = time_str ~ " hour " %}
+        {% else %}
+            {% set time_str = time_str ~ " hours " %}
+        {% endif %}
+        {% set minutes = new_time % 60 %}
+        {% if minutes == 1 %}
+            {% set time_str = time_str ~ "1 minute" %}
+        {% elif minutes > 0 %}
+            {% set time_str = time_str ~ new_time % 60 ~ " minutes"%}
+        {% endif %}
+    {% else %}   
+        {% set time_str = time_str ~ new_time ~ " minutes"%}
+    {% endif %}
+    <h3>{{time_str|safe}}</h3>
+{% endif %}
+<form action="/cook/convert" method="post">
+    <input type="number" name="orig_temp" value="" required />
+    <input type="number" name="orig_time_in_mins" value="" required />
+    <input type="number" name="new_temp" value="" required />
+    <input type="submit">
+</form>
+{% endblock %}

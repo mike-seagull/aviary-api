@@ -1,7 +1,17 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request, Form
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
-cook_router = APIRouter()
+templates = Jinja2Templates(directory="templates")
+router = APIRouter()
 
-@cook_router.post('/')
-def convert():
-    return "in cook"
+@router.get("/", response_class=HTMLResponse)
+def cook_page(request: Request):
+    print("in cook")
+    result = "Type a number"
+    return templates.TemplateResponse("cook.html", context={'request': request, 'result': result})
+
+@router.post('/convert', response_class=HTMLResponse)
+def convert(request: Request, number: int = Form(...)):
+    result = number + 2
+    return templates.TemplateResponse('twoforms.html', context={'request': request, 'result': result, 'yournum': number})
