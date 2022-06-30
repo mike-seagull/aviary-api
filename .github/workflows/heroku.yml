@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - master
+      - new-main
 
 jobs:
   build:
@@ -16,4 +16,4 @@ jobs:
           heroku_app_name: "aviary-api" #Must be unique in Heroku
           heroku_email: "hollister.michael@gmail.com"
           usedocker: true
-          branch: "new-main"
+          branch: new-main
