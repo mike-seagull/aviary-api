@@ -1,0 +1,10 @@
+{% block page_content %}
+<h1 class="cap">Redirect URL</h1>
+<form action="/rd" method="post">
+    <input type="string" name="url" value="" required />
+    <input type="submit">
+</form>
+{% if tag %}
+<h3>/rd/{{tag|safe}}</h3>
+{% endif %}
+{% endblock %}
