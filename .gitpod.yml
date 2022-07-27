@@ -2,11 +2,12 @@ github:
   prebuilds:
     master: false
     branches: true
-image: ghcr.io/mike-seagull/gitpod-images:tailscale
+image:
+  file: .gitpod.Dockerfile
 tasks:
   - name: install dependencies
+    # pyenv install $(cat .python-version)
     before: |
-      pyenv install $(cat .python-version)
       python -m venv .venv
       source .venv/bin/activate
     init: pip install -r requirements.txt
